@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.quizzapp.databinding.FragmentHomeBinding;
+import com.example.quizzapp.databinding.FragmentDatabaseBinding;
 
 public class DatabaseFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentDatabaseBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         DatabaseViewModel homeViewModel =
                 new ViewModelProvider(this).get(DatabaseViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentDatabaseBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textHome;

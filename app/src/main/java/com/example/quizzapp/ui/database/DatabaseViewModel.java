@@ -10,7 +10,7 @@ public class DatabaseViewModel extends ViewModel {
 
     public DatabaseViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is database fragment");
+        mText.setValue("Database");
     }
 
     public LiveData<String> getText() {

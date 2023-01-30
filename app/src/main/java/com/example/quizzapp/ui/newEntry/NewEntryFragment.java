@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.quizzapp.databinding.FragmentNotificationsBinding;
+import com.example.quizzapp.databinding.FragmentNewEntryBinding;
 
 public class NewEntryFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentNewEntryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         NewEntryViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(NewEntryViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentNewEntryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;

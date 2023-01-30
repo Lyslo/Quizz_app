@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.quizzapp.databinding.FragmentDashboardBinding;
+import com.example.quizzapp.databinding.FragmentQuizBinding;
 
 public class QuizFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentQuizBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         QuizViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(QuizViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentQuizBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
