@@ -7,16 +7,16 @@
 
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/_00px_persialainen"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/_00px_persialainen" />
 
     <TextView
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:paddingLeft="10dp"
-        android:text="Item Name"/>
+        android:text="Item Name"
+        android:textSize="20sp" />
 
 </LinearLayout>
