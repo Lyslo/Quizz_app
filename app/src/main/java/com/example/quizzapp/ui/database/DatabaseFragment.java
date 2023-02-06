@@ -15,7 +15,7 @@ import com.example.quizzapp.model.Item;
 
 import java.util.ArrayList;
 
-public class DatabaseFragment extends Fragment {
+public class DatabaseFragment extends Fragment implements RecyclerViewInterface{
 
     private RecyclerView recyclerView;
     private MyAdapter adapter;
@@ -34,9 +34,20 @@ public class DatabaseFragment extends Fragment {
         ArrayList<Item> itemList = new ArrayList<>();
         Database database = Database.getInstance(itemList);
 
-        adapter = new MyAdapter(database.getItemList());
+        adapter = new MyAdapter(database.getItemList(), this);
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    //The method below is executed when an item in the recyclerview is clicked
+    @Override
+    public void onItemClick(int position) {
+        //get the items from the db
+        ArrayList<Item> itemList = new ArrayList<>();
+        Database database = Database.getInstance(itemList);
+
+        database.removeItem(position);
+
     }
 }

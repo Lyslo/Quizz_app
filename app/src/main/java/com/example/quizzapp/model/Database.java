@@ -27,4 +27,9 @@ public class Database {
     public void setItemList(ArrayList<Item> itemList) {
         this.itemList = itemList;
     }
+
+    public void removeItem(int pos){
+        itemList.remove(pos);
+    }
+
 }

@@ -1,7 +1,11 @@
 package com.example.quizzapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.example.quizzapp.R;
 import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -54,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
         database.getItemList().add(item2);
         database.getItemList().add(item3);
 
-
-
-
+       
 
     }
 
