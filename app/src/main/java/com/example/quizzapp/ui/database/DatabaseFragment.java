@@ -47,7 +47,11 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface{
         ArrayList<Item> itemList = new ArrayList<>();
         Database database = Database.getInstance(itemList);
 
+        //Remove item from db
         database.removeItem(position);
 
+        //Refresh the fragment (and update the UI)
+        adapter = new MyAdapter(database.getItemList(), this);
+        recyclerView.setAdapter(adapter);
     }
 }

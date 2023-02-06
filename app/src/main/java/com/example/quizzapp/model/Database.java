@@ -7,7 +7,8 @@ public class Database {
     private ArrayList<Item> itemList;
 
     //This class uses an instance so that it can be globally accessible
-    private Database() {}
+    private Database() {
+    }
 
     public Database(ArrayList<Item> itemList) {
         this.itemList = itemList;
@@ -28,8 +29,12 @@ public class Database {
         this.itemList = itemList;
     }
 
-    public void removeItem(int pos){
+    public void removeItem(int pos) {
         itemList.remove(pos);
+    }
+
+    public void addItem(Item item) {
+        itemList.add(item);
     }
 
 }
