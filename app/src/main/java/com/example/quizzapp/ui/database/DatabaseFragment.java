@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizzapp.R;
+import com.example.quizzapp.model.Database;
+import com.example.quizzapp.model.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private MyAdapter adapter;
-    private List<Item> items;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,14 +30,11 @@ public class DatabaseFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //Make a list of a few items
-        items = new ArrayList<>();
-        items.add(new Item(R.drawable.lilac_scottish_fold, "Scottish fold"));
-        items.add(new Item(R.drawable._00px_persialainen, "Persian"));
-        items.add(new Item(R.drawable._00px_gustav_chocolate, "Abyssian"));
-        // Add more items as needed
+        //get the items from the db
+        ArrayList<Item> itemList = new ArrayList<>();
+        Database database = Database.getInstance(itemList);
 
-        adapter = new MyAdapter(items);
+        adapter = new MyAdapter(database.getItemList());
         recyclerView.setAdapter(adapter);
 
         return view;

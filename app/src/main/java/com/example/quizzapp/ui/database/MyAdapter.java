@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizzapp.R;
+import com.example.quizzapp.model.Item;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.quizzapp.ui.database;
+package com.example.quizzapp.model;
 
 public class Item {
 
