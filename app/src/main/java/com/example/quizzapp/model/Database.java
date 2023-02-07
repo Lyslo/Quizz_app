@@ -1,6 +1,9 @@
 package com.example.quizzapp.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class Database {
     private static Database instance;
@@ -35,6 +38,26 @@ public class Database {
 
     public void addItem(Item item) {
         itemList.add(item);
+    }
+
+
+    public void sortAz(){
+
+        Collections.sort(itemList, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+    }
+
+    public void sortZA() {
+        Collections.sort(itemList, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o2.getName().compareTo(o1.getName());
+            }
+        });
     }
 
 }
