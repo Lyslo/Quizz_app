@@ -3,7 +3,6 @@ package com.example.quizzapp.ui.database;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
-        holder.itemImage.setImageResource(item.getImage());
+        holder.itemImage.setImageBitmap(item.getImage());
         holder.itemName.setText(item.getName());
     }
 

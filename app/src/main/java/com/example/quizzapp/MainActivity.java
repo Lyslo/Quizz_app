@@ -1,14 +1,8 @@
 package com.example.quizzapp;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.example.quizzapp.R;
-import com.example.quizzapp.model.Database;
-import com.example.quizzapp.model.Item;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -17,6 +11,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.quizzapp.databinding.ActivityMainBinding;
+import com.example.quizzapp.model.Database;
+import com.example.quizzapp.model.Item;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -49,10 +46,18 @@ public class MainActivity extends AppCompatActivity {
 
         Database database = Database.getInstance(itemList);
 
+        int imageId1 = getResources().getIdentifier("lilac_scottish_fold", "drawable", getApplicationContext().getPackageName());
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), imageId1);
+        int imageId2 = getResources().getIdentifier("_00px_persialainen", "drawable", getApplicationContext().getPackageName());
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), imageId2);
+        int imageId3 = getResources().getIdentifier("_00px_gustav_chocolate", "drawable", getApplicationContext().getPackageName());
+        Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), imageId3);
 
-        Item item1 = new Item(R.drawable.lilac_scottish_fold, "Scottish fold");
-        Item item2 = new Item(R.drawable._00px_persialainen, "Persian");
-        Item item3 = new Item(R.drawable._00px_gustav_chocolate, "Abyssian");
+
+
+        Item item1 = new Item(bitmap1, "Scottish fold");
+        Item item2 = new Item(bitmap2, "Persian");
+        Item item3 = new Item(bitmap3, "Abyssian");
 
         database.getItemList().add(item1);
         database.getItemList().add(item2);

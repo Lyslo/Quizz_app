@@ -3,4 +3,6 @@
     <string name="title_home">Database</string>
     <string name="title_dashboard">Quiz</string>
     <string name="title_notifications">New entry</string>
+    <string name="import_photo">Import Photo</string>
+    <string name="photo_name_hint">Enter the name of the photo</string>
 </resources>

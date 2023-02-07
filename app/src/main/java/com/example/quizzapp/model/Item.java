@@ -1,16 +1,18 @@
 package com.example.quizzapp.model;
 
+import android.graphics.Bitmap;
+
 public class Item {
 
-    private int image;
+    private Bitmap image;
     private String name;
 
-    public Item(int image, String name) {
+    public Item(Bitmap image, String name) {
         this.image = image;
         this.name = name;
     }
 
-    public int getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
