@@ -1,6 +1,7 @@
 package com.example.quizzapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private List<Button> buttons;
     private String mode;
+    private CountDownTimer currenTimer;
 
 
     @Override
@@ -81,6 +83,8 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void setUpQuiz() {
+
+
         attempts++;
 
         database = Database.getInstance(itemList);
@@ -89,6 +93,7 @@ public class QuizActivity extends AppCompatActivity {
         itemImageView.setImageBitmap(currentItem.getImage());
 
         buttons = Arrays.asList(option1Button, option2Button, option3Button);
+        resetButtons();
         int correctOptionIndex = new Random().nextInt(3);
         buttons.get(correctOptionIndex).setText(currentItem.getName());
 
@@ -121,7 +126,7 @@ public class QuizActivity extends AppCompatActivity {
                         }
                         b.setEnabled(false);
                     }
-                    // resetButtons();
+
                 }
             });
         }
@@ -133,8 +138,10 @@ public class QuizActivity extends AppCompatActivity {
         // Do something for hard mode
         setUpQuiz();
 
-
-        new CountDownTimer(30000, 1000) { // 30 seconds countdown, update every second
+        if (currenTimer != null) {
+            currenTimer.cancel();
+        }
+        currenTimer = new CountDownTimer(30000, 1000) { // 30 seconds countdown, update every second
             public void onTick(long millisUntilFinished) {
                 timerText.setText("Seconds remaining: " + millisUntilFinished / 1000);
             }
@@ -148,15 +155,13 @@ public class QuizActivity extends AppCompatActivity {
     }
 
 
-/*
     private void resetButtons() {
         for (Button button : buttons) {
-            button.setBackgroundColor(ORIGINAL_COLOR);
+            button.setBackgroundColor(androidx.appcompat.R.attr.colorButtonNormal);
             button.setEnabled(true);
         }
     }
 
- */
 
 }
 
