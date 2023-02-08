@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class Database {
     private static Database instance;
@@ -41,7 +42,7 @@ public class Database {
     }
 
 
-    public void sortAz(){
+    public void sortAz() {
 
         Collections.sort(itemList, new Comparator<Item>() {
             @Override
@@ -58,6 +59,13 @@ public class Database {
                 return o2.getName().compareTo(o1.getName());
             }
         });
+    }
+
+    public Item getRandomItem() {
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(itemList.size());
+        Item randomItem = itemList.get(randomIndex);
+        return randomItem;
     }
 
 }
