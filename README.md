@@ -3,9 +3,11 @@
 Welcome to the DAT153 Quiz App, a fun and interactive quiz application for Android devices. This app was developed as a project for the "DAT153" class at HVL.
 
 ## Features
-- 10 quiz questions on various topics
+- Quiz
 - A timer for each quiz question
 - A score display
+- Database
+- Option to add new items to database
 
 ## Getting Started
 
