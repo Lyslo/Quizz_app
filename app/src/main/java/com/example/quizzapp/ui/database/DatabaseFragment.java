@@ -21,44 +21,44 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
     private RecyclerView recyclerView;
     private MyAdapter adapter;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        //Button sort A-Z
         View view = inflater.inflate(R.layout.fragment_database, container, false);
+        // Set up buttons
         Button myButton;
         Button myButton2;
+        // Fetch the correct button id
         myButton = view.findViewById(R.id.button3);
         myButton2 = view.findViewById(R.id.button4);
-        myButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Do something in response to button click
-                //get the items from the db
-                ArrayList<Item> itemList = new ArrayList<>();
-                Database database = Database.getInstance(itemList);
-                database.sortAz();
 
-                //Refresh the fragment (and update the UI)
-                adapter = new MyAdapter(database.getItemList(), DatabaseFragment.this);
-                recyclerView.setAdapter(adapter);
-            }
+        //Button sort A-Z
+        myButton.setOnClickListener(v -> {
+
+            // Get the items from the db
+            ArrayList<Item> itemList = new ArrayList<>();
+            Database database = Database.getInstance(itemList);
+            // Sort form A-Z
+            database.sortAz();
+
+            //Refresh the fragment (and update the UI)
+            adapter = new MyAdapter(database.getItemList(), this);
+            recyclerView.setAdapter(adapter);
         });
 
-        myButton2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Do something in response to button click
-                //get the items from the db
-                ArrayList<Item> itemList = new ArrayList<>();
-                Database database = Database.getInstance(itemList);
-                database.sortZA();
+        //Button sort Z-A
+        myButton2.setOnClickListener(v -> {
 
-                //Refresh the fragment (and update the UI)
-                adapter = new MyAdapter(database.getItemList(), DatabaseFragment.this);
-                recyclerView.setAdapter(adapter);
-            }
+            // Get the items from the db
+            ArrayList<Item> itemList = new ArrayList<>();
+            Database database = Database.getInstance(itemList);
+            // Sort from Z-A
+            database.sortZA();
+
+            //Refresh the fragment (and update the UI)
+            adapter = new MyAdapter(database.getItemList(), this);
+            recyclerView.setAdapter(adapter);
         });
 
 
@@ -77,9 +77,8 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
     }
 
     //The method below is executed when an item in the recyclerview is clicked
-
     public void onItemClick(int position) {
-        //get the items from the db
+        // Get the items from the db
         ArrayList<Item> itemList = new ArrayList<>();
         Database database = Database.getInstance(itemList);
 
@@ -91,28 +90,4 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         recyclerView.setAdapter(adapter);
     }
 
-    //Handles button presses
-
-
-    public void onClick(View v) {
-        // Do something in response to button click
-        //get the items from the db
-        ArrayList<Item> itemList = new ArrayList<>();
-        Database database = Database.getInstance(itemList);
-
-        //Check for what button is pressed
-        switch (v.getId()) {
-            case R.id.button3:
-                database.sortAz();
-                break;
-            case R.id.button4:
-                database.sortZA();
-                break;
-        }
-
-        //Refresh the fragment (and update the UI)
-        adapter = new MyAdapter(database.getItemList(), DatabaseFragment.this);
-        recyclerView.setAdapter(adapter);
-
-    }
 }
