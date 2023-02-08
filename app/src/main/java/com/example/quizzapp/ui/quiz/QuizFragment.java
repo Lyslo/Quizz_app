@@ -1,37 +1,49 @@
 package com.example.quizzapp.ui.quiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.quizzapp.databinding.FragmentQuizBinding;
+import com.example.quizzapp.QuizActivity;
+import com.example.quizzapp.R;
 
 public class QuizFragment extends Fragment {
-
-    private FragmentQuizBinding binding;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        QuizViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(QuizViewModel.class);
-
-        binding = FragmentQuizBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
-    }
+    private Button easyButton;
+    private Button hardButton;
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_quiz, container, false);
+
+        easyButton = view.findViewById(R.id.button6);
+        hardButton = view.findViewById(R.id.button7);
+
+        easyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuizActivity("easy");
+            }
+        });
+
+        hardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuizActivity("hard");
+            }
+        });
+
+        return view;
+    }
+
+    private void startQuizActivity(String mode) {
+        Intent intent = new Intent(getActivity(), QuizActivity.class);
+        intent.putExtra("mode", mode);
+        startActivity(intent);
     }
 }
