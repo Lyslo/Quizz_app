@@ -2,6 +2,8 @@ package com.example.quizzapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -14,7 +16,6 @@ import com.example.quizzapp.model.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -33,6 +34,8 @@ public class QuizActivity extends AppCompatActivity {
     private Button option1Button;
     private Button option2Button;
     private Button option3Button;
+
+    private List<Button> buttons;
     private String mode;
 
 
@@ -65,7 +68,12 @@ public class QuizActivity extends AppCompatActivity {
 
         Button nextButton = findViewById(R.id.button4);
 
-        nextButton.setOnClickListener(view1 -> setUpQuiz());
+        if (mode.equals("hard")) {
+            nextButton.setOnClickListener(view1 -> setUpHardQuiz());
+        } else {
+            nextButton.setOnClickListener(view1 -> setUpQuiz());
+        }
+
 
         Button closeButton = (Button) findViewById(R.id.button5);
         closeButton.setOnClickListener(view12 -> finish());
@@ -73,13 +81,14 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void setUpQuiz() {
+        attempts++;
 
         database = Database.getInstance(itemList);
 
         currentItem = database.getRandomItem();
         itemImageView.setImageBitmap(currentItem.getImage());
 
-        List<Button> buttons = Arrays.asList(option1Button, option2Button, option3Button);
+        buttons = Arrays.asList(option1Button, option2Button, option3Button);
         int correctOptionIndex = new Random().nextInt(3);
         buttons.get(correctOptionIndex).setText(currentItem.getName());
 
@@ -96,28 +105,58 @@ public class QuizActivity extends AppCompatActivity {
 
         scoreText.setText("Score: " + score + " / " + attempts);
 
+        //Checks if the correct button has been clicked and does stuff
+        for (Button button : buttons) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (((Button) view).getText().toString().equals(currentItem.getName())) {
+                        score++;
+                    }
+                    for (Button b : buttons) {
+                        if (b.getText().toString().equals(currentItem.getName())) {
+                            b.setBackgroundColor(Color.GREEN);
+                        } else {
+                            b.setBackgroundColor(Color.RED);
+                        }
+                        b.setEnabled(false);
+                    }
+                    // resetButtons();
+                }
+            });
+        }
+
 
     }
 
-    private void setUpHardQuiz(){
+    private void setUpHardQuiz() {
         // Do something for hard mode
         setUpQuiz();
 
 
-            new CountDownTimer(30000, 1000) { // 30 seconds countdown, update every second
-                public void onTick(long millisUntilFinished) {
-                    timerText.setText("Seconds remaining: " + millisUntilFinished / 1000);
-                }
+        new CountDownTimer(30000, 1000) { // 30 seconds countdown, update every second
+            public void onTick(long millisUntilFinished) {
+                timerText.setText("Seconds remaining: " + millisUntilFinished / 1000);
+            }
 
-                public void onFinish() {
-                    attempts++;
-                    setUpHardQuiz();
-                }
-            }.start();
+            public void onFinish() {
+                setUpHardQuiz();
+            }
+        }.start();
 
 
     }
 
+
+/*
+    private void resetButtons() {
+        for (Button button : buttons) {
+            button.setBackgroundColor(ORIGINAL_COLOR);
+            button.setEnabled(true);
+        }
+    }
+
+ */
 
 }
 
