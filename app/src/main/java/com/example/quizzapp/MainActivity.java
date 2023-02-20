@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
         //Initialize database
         //Make a list of a few items
         ArrayList<Item> itemList = new ArrayList<>();
@@ -53,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         int imageId3 = getResources().getIdentifier("_00px_gustav_chocolate", "drawable", getApplicationContext().getPackageName());
         Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), imageId3);
 
-
-
         Item item1 = new Item(bitmap1, "Scottish fold");
         Item item2 = new Item(bitmap2, "Persian");
         Item item3 = new Item(bitmap3, "Abyssian");
@@ -62,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
         database.getItemList().add(item1);
         database.getItemList().add(item2);
         database.getItemList().add(item3);
-
-       
 
     }
 

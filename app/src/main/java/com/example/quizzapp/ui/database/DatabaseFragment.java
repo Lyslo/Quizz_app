@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class DatabaseFragment extends Fragment implements RecyclerViewInterface {
 
     private RecyclerView recyclerView;
-    private MyAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,34 +32,13 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         myButton = view.findViewById(R.id.button3);
         myButton2 = view.findViewById(R.id.button4);
 
+        View.OnClickListener l = view1 -> extracted(view1 == myButton);
+
         //Button sort A-Z
-        myButton.setOnClickListener(v -> {
-
-            // Get the items from the db
-            ArrayList<Item> itemList = new ArrayList<>();
-            Database database = Database.getInstance(itemList);
-            // Sort form A-Z
-            database.sortAz();
-
-            //Refresh the fragment (and update the UI)
-            adapter = new MyAdapter(database.getItemList(), this);
-            recyclerView.setAdapter(adapter);
-        });
+        myButton.setOnClickListener(l);
 
         //Button sort Z-A
-        myButton2.setOnClickListener(v -> {
-
-            // Get the items from the db
-            ArrayList<Item> itemList = new ArrayList<>();
-            Database database = Database.getInstance(itemList);
-            // Sort from Z-A
-            database.sortZA();
-
-            //Refresh the fragment (and update the UI)
-            adapter = new MyAdapter(database.getItemList(), this);
-            recyclerView.setAdapter(adapter);
-        });
-
+        myButton2.setOnClickListener(l);
 
         //Initiate the recyclerview
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -70,10 +48,25 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         ArrayList<Item> itemList = new ArrayList<>();
         Database database = Database.getInstance(itemList);
 
-        adapter = new MyAdapter(database.getItemList(), this);
+        MyAdapter adapter = new MyAdapter(database.getItemList(), this);
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    private void extracted(Boolean atoz) {
+
+        ArrayList<Item> itemList = new ArrayList<>();
+        Database database = Database.getInstance(itemList);
+        // Sort from Z-A
+        if(atoz) {
+            database.sortAz();
+        }else{
+            database.sortZA();
+        }
+
+        //Refresh the fragment (and update the UI)
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     //The method below is executed when an item in the recyclerview is clicked
@@ -86,8 +79,7 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         database.removeItem(position);
 
         //Refresh the fragment (and update the UI)
-        adapter = new MyAdapter(database.getItemList(), this);
-        recyclerView.setAdapter(adapter);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
 }

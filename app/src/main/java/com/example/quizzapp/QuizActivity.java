@@ -49,7 +49,7 @@ public class QuizActivity extends AppCompatActivity {
         View view = findViewById(android.R.id.content);
 
         score = 0;
-        attempts = 0;
+        attempts = -1;
 
         itemImageView = view.findViewById(R.id.imageView);
         scoreText = view.findViewById(R.id.score);
@@ -83,7 +83,6 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void setUpQuiz() {
-
 
         attempts++;
 
