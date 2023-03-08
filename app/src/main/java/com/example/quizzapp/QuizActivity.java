@@ -96,12 +96,13 @@ public class QuizActivity extends AppCompatActivity {
         int correctOptionIndex = new Random().nextInt(3);
         buttons.get(correctOptionIndex).setText(currentItem.getName());
 
-
         for (int i = 0; i < buttons.size(); i++) {
             if (i == correctOptionIndex) continue;
             Item randomItem = database.getRandomItem();
-            while (randomItem.getName() == currentItem.getName()) {
-                randomItem = database.getRandomItem();
+            if(database.getItemList().size() > 1) {
+                while (randomItem.getName() == currentItem.getName()) {
+                    randomItem = database.getRandomItem();
+                }
             }
             buttons.get(i).setText(randomItem.getName());
         }
