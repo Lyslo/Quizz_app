@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
+import com.example.quizzapp.model.ItemDao;
+import com.example.quizzapp.model.ItemDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +29,8 @@ public class QuizActivity extends AppCompatActivity {
     private int attempts;
     private Item currentItem;
     private List<Item> randomItems;
-    private Database database;
-    private ArrayList<Item> itemList;
+    private ItemDao itemDao;
+    private com.example.quizzapp.model.ItemDatabase ItemDatabase;
     private ImageView itemImageView;
     private TextView scoreText;
     private TextView timerText;
@@ -86,9 +88,13 @@ public class QuizActivity extends AppCompatActivity {
 
         attempts++;
 
-        database = Database.getInstance(itemList);
+        // Get instance of the database
+        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getApplicationContext());
 
-        currentItem = database.getRandomItem();
+        // Get instance of the DAO
+        ItemDao itemDao = itemDatabase.itemDao();
+
+        currentItem = itemDao.getRandomItem();
         itemImageView.setImageBitmap(currentItem.getImage());
 
         buttons = Arrays.asList(option1Button, option2Button, option3Button);
@@ -98,10 +104,10 @@ public class QuizActivity extends AppCompatActivity {
 
         for (int i = 0; i < buttons.size(); i++) {
             if (i == correctOptionIndex) continue;
-            Item randomItem = database.getRandomItem();
-            if(database.getItemList().size() > 1) {
+            Item randomItem = itemDao.getRandomItem();
+            if(itemDao.getAllItems().size() > 1) {
                 while (randomItem.getName() == currentItem.getName()) {
-                    randomItem = database.getRandomItem();
+                    randomItem = itemDao.getRandomItem();
                 }
             }
             buttons.get(i).setText(randomItem.getName());

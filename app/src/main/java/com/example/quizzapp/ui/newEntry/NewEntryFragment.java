@@ -23,6 +23,8 @@ import androidx.fragment.app.Fragment;
 import com.example.quizzapp.R;
 import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
+import com.example.quizzapp.model.ItemDao;
+import com.example.quizzapp.model.ItemDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,12 +65,15 @@ public class NewEntryFragment extends Fragment {
                     Toast.makeText(getContext(), "Enter a name for the photo", Toast.LENGTH_SHORT).show();
                 } else {
                     // Add code to handle the photo and photo name submission
-                    ArrayList<Item> itemList = new ArrayList<>();
-                    Database database = Database.getInstance(itemList);
+                    // Get instance of the database
+                    ItemDatabase itemDatabase = ItemDatabase.getDatabase(getContext());
+
+                    // Get instance of the DAO
+                    ItemDao itemDao = itemDatabase.itemDao();
 
                     Item item1 = new Item(selectedImage, photoName);
 
-                    database.getItemList().add(item1);
+                    itemDao.insert(item1);
                 }
             }
         });

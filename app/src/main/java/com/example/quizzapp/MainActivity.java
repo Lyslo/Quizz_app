@@ -13,6 +13,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.quizzapp.databinding.ActivityMainBinding;
 import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
+import com.example.quizzapp.model.ItemDao;
+import com.example.quizzapp.model.ItemDatabase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -41,24 +43,30 @@ public class MainActivity extends AppCompatActivity {
 
         //Initialize database
         //Make a list of a few items
-        ArrayList<Item> itemList = new ArrayList<>();
 
-        Database database = Database.getInstance(itemList);
+        // Get instance of the database
+        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getApplicationContext());
 
-        int imageId1 = getResources().getIdentifier("lilac_scottish_fold", "drawable", getApplicationContext().getPackageName());
-        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), imageId1);
-        int imageId2 = getResources().getIdentifier("_00px_persialainen", "drawable", getApplicationContext().getPackageName());
-        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), imageId2);
-        int imageId3 = getResources().getIdentifier("_00px_gustav_chocolate", "drawable", getApplicationContext().getPackageName());
-        Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), imageId3);
+        // Get instance of the DAO
+        ItemDao itemDao = itemDatabase.itemDao();
 
+        // Decode the bitmaps
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("lilac_scottish_fold", "drawable", getPackageName()));
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("_00px_persialainen", "drawable", getPackageName()));
+        Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("_00px_gustav_chocolate", "drawable", getPackageName()));
+
+        // Create the items
         Item item1 = new Item(bitmap1, "Scottish fold");
         Item item2 = new Item(bitmap2, "Persian");
         Item item3 = new Item(bitmap3, "Abyssian");
 
-        database.getItemList().add(item1);
-        database.getItemList().add(item2);
-        database.getItemList().add(item3);
+        // Insert the items into the database
+        itemDao.insert(item1);
+        itemDao.insert(item2);
+        itemDao.insert(item3);
+
+        itemDatabase.close();
+
 
     }
 
