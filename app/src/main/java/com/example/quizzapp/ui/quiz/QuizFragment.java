@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quizzapp.QuizActivity;
 import com.example.quizzapp.R;
+import com.example.quizzapp.ui.database.DatabaseFragment;
 
 public class QuizFragment extends Fragment {
     private Button easyButton;
@@ -45,5 +47,18 @@ public class QuizFragment extends Fragment {
         Intent intent = new Intent(getActivity(), QuizActivity.class);
         intent.putExtra("mode", mode);
         startActivity(intent);
+
+        /*
+
+        Code i came up with after feedback.
+        However it breaks the app.
+
+        Fragment fragment = new DatabaseFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.quiz_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+         */
     }
 }
