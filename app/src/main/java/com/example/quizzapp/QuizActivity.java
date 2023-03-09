@@ -88,15 +88,17 @@ public class QuizActivity extends AppCompatActivity {
 
         attempts++;
 
-// Get instance of the database
+        // Get instance of the database
         itemRepository = new ItemRepository(this);
 
-// Observe changes to the random item
+        // Initialize the buttons list
+        buttons = Arrays.asList(option1Button, option2Button, option3Button);
+
+        // Observe changes to the random item
         itemRepository.getRandomItem().observe(this, item -> {
             currentItem = item;
             itemImageView.setImageBitmap(currentItem.getImage());
 
-            buttons = Arrays.asList(option1Button, option2Button, option3Button);
             resetButtons();
             int correctOptionIndex = new Random().nextInt(3);
             buttons.get(correctOptionIndex).setText(currentItem.getName());
@@ -115,7 +117,6 @@ public class QuizActivity extends AppCompatActivity {
                 }
             });
         });
-
 
         scoreText.setText("Score: " + score + " / " + attempts);
 
@@ -139,8 +140,6 @@ public class QuizActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
     private void setUpHardQuiz() {
