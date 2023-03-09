@@ -23,5 +23,5 @@ public interface ItemDao {
     List<Item> getAllItems();
 
     @Query("SELECT * FROM item_table ORDER BY RANDOM() LIMIT 1")
-    Void getRandomItem();
+    Item getRandomItem();
 }

@@ -15,14 +15,17 @@ import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
 import com.example.quizzapp.model.ItemDao;
 import com.example.quizzapp.model.ItemDatabase;
+import com.example.quizzapp.model.ItemRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseFragment extends Fragment implements RecyclerViewInterface {
 
     private RecyclerView recyclerView;
+    private ItemRepository itemRepository;
     private ItemDao itemDao;
-    private com.example.quizzapp.model.ItemDatabase ItemDatabase;
+    private ItemDatabase itemDatabase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,13 +53,14 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
 
         //get the items from the db
 
-        // Get instance of the database
-        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getContext());
+        itemDatabase = ItemDatabase.getDatabase(getContext());
 
-        // Get instance of the DAO
-        ItemDao itemDao = itemDatabase.itemDao();
+        // Initialize the ItemDao
+        itemDao = itemDatabase.itemDao();
+        itemRepository = new ItemRepository(itemDao);
 
-        MyAdapter adapter = new MyAdapter(itemDao.getAllItems(), this);
+
+        MyAdapter adapter = new MyAdapter(itemRepository.getAllItems(), this);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -64,11 +68,12 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
 
     private void extracted(Boolean atoz) {
 
-        // Get instance of the database
-        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getContext());
+        itemDatabase = ItemDatabase.getDatabase(getContext());
 
-        // Get instance of the DAO
-        ItemDao itemDao = itemDatabase.itemDao();
+        // Initialize the ItemDao
+        itemDao = itemDatabase.itemDao();
+        itemRepository = new ItemRepository(itemDao);
+
         // Sort from Z-A
         /*
         if(atoz) {
@@ -84,16 +89,20 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
     //The method below is executed when an item in the recyclerview is clicked
     public void onItemClick(int position) {
         // Get the items from the db
-        // Get instance of the database
-        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getContext());
+        itemDatabase = ItemDatabase.getDatabase(getContext());
+        itemDao = itemDatabase.itemDao();
+        itemRepository = new ItemRepository(itemDao);
 
-        // Get instance of the DAO
-        ItemDao itemDao = itemDatabase.itemDao();
+        // Get the list of all items
+        List<Item> items = itemRepository.getAllItems();
 
-        //Remove item from db
-        //database.removeItem(position);
+        // Get the item at the clicked position
+        Item itemToDelete = items.get(position);
 
-        //Refresh the fragment (and update the UI)
+        // Remove the item from the db
+        itemRepository.delete(itemToDelete);
+
+        // Refresh the fragment (and update the UI)
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

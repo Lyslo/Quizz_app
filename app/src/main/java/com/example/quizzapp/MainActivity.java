@@ -15,6 +15,7 @@ import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
 import com.example.quizzapp.model.ItemDao;
 import com.example.quizzapp.model.ItemDatabase;
+import com.example.quizzapp.model.ItemRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private ItemRepository itemRepository;
+    private ItemDao itemDao;
+    private ItemDatabase itemDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +45,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        //Initialize database
+        /*
+
+        //Initialize database - ONLY NEEDS TO BE RUN ONCE FOR TESTING
         //Make a list of a few items
 
-        // Get instance of the database
-        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getApplicationContext());
+        // Create an instance of the ItemRepository class, passing in the ItemDao implementation
+        // Get a reference to the AppDatabase
+        itemDatabase = ItemDatabase.getDatabase(getApplicationContext());
 
-        // Get instance of the DAO
-        ItemDao itemDao = itemDatabase.itemDao();
+        // Initialize the ItemDao
+        itemDao = itemDatabase.itemDao();
+        itemRepository = new ItemRepository(itemDao);
 
         // Decode the bitmaps
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("lilac_scottish_fold", "drawable", getPackageName()));
@@ -61,12 +69,10 @@ public class MainActivity extends AppCompatActivity {
         Item item3 = new Item(bitmap3, "Abyssian");
 
         // Insert the items into the database
-        itemDao.insert(item1);
-        itemDao.insert(item2);
-        itemDao.insert(item3);
-
-        itemDatabase.close();
-
+        itemRepository.insert(item1);
+        itemRepository.insert(item2);
+        itemRepository.insert(item3);
+        */
 
     }
 

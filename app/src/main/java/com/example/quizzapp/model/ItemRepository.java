@@ -21,7 +21,6 @@ public class ItemRepository implements ItemDao {
         }
     }
 
-
     @Override
     public void insert(Item item) {
         new InsertItemTask(item).execute();
@@ -38,7 +37,7 @@ public class ItemRepository implements ItemDao {
     }
 
     @Override
-    public Void getRandomItem() {
+    public Item getRandomItem() {
         try {
             return new getRandomItemTask().execute().get();
         } catch (Exception e) {
@@ -54,7 +53,6 @@ public class ItemRepository implements ItemDao {
             return mItemDao.getAllItems();
         }
     }
-
 
     private class InsertItemTask extends AsyncTask<Void, Void, Void> {
 
@@ -101,7 +99,7 @@ public class ItemRepository implements ItemDao {
         }
     }
 
-    private class getRandomItemTask extends AsyncTask<Void, Void, Void>{
+    private class getRandomItemTask extends AsyncTask<Void, Void, Item> {
 
         @Override
         protected Item doInBackground(Void... voids) {
@@ -109,6 +107,5 @@ public class ItemRepository implements ItemDao {
         }
     }
 }
-
 
 
