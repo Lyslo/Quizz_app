@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         itemRepository.insert(item1);
         itemRepository.insert(item2);
         itemRepository.insert(item3);
-        */
 
+        */
     }
 
 }

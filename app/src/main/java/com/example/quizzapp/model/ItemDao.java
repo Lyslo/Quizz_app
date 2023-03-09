@@ -24,4 +24,10 @@ public interface ItemDao {
 
     @Query("SELECT * FROM item_table ORDER BY RANDOM() LIMIT 1")
     Item getRandomItem();
+
+    @Query("SELECT * FROM item_table ORDER BY name ASC")
+    List<Item> getAllItemsSortedAZ();
+
+    @Query("SELECT * FROM item_table ORDER BY name DESC")
+    List<Item> getAllItemsSortedZA();
 }

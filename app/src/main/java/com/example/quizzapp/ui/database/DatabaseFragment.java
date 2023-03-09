@@ -26,6 +26,8 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
     private ItemRepository itemRepository;
     private ItemDao itemDao;
     private ItemDatabase itemDatabase;
+    private List<Item> itemList;
+    MyAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,8 +61,8 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         itemDao = itemDatabase.itemDao();
         itemRepository = new ItemRepository(itemDao);
 
-
-        MyAdapter adapter = new MyAdapter(itemRepository.getAllItems(), this);
+        itemList = itemRepository.getAllItems();
+        adapter = new MyAdapter(itemList, this);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -75,14 +77,14 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         itemRepository = new ItemRepository(itemDao);
 
         // Sort from Z-A
-        /*
+
         if(atoz) {
-            database.sortAz();
+           itemList = itemRepository.getAllItemsSortedAZ();
         }else{
-            database.sortZA();
+           itemList = itemRepository.getAllItemsSortedZA();
         }
-        */
-        //Refresh the fragment (and update the UI)
+
+        //refresh
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

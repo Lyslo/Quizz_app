@@ -2,6 +2,7 @@ package com.example.quizzapp.model;
 
 import android.os.AsyncTask;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ItemRepository implements ItemDao {
 
@@ -15,6 +16,26 @@ public class ItemRepository implements ItemDao {
     public List<Item> getAllItems() {
         try {
             return new GetAllItemsTask().execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Item> getAllItemsSortedAZ() {
+        try {
+            return new GetAllItemsSortedAZTask().execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Item> getAllItemsSortedZA() {
+        try {
+            return new GetAllItemsSortedZATask().execute().get();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -51,6 +72,24 @@ public class ItemRepository implements ItemDao {
         @Override
         protected List<Item> doInBackground(Void... voids) {
             return mItemDao.getAllItems();
+        }
+    }
+
+    private class GetAllItemsSortedAZTask extends AsyncTask<Void, Void, List<Item>> {
+
+        @Override
+        protected List<Item> doInBackground(Void... voids) {
+            mItemDao.getAllItemsSortedAZ();
+            return null;
+        }
+    }
+
+    private class GetAllItemsSortedZATask extends AsyncTask<Void, Void, List<Item>> {
+
+        @Override
+        protected List<Item> doInBackground(Void... voids) {
+            mItemDao.getAllItemsSortedZA();
+            return null;
         }
     }
 
@@ -107,5 +146,3 @@ public class ItemRepository implements ItemDao {
         }
     }
 }
-
-
