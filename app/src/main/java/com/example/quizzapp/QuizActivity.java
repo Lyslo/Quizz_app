@@ -16,6 +16,7 @@ import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
 import com.example.quizzapp.model.ItemDao;
 import com.example.quizzapp.model.ItemDatabase;
+import com.example.quizzapp.model.ItemRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +30,6 @@ public class QuizActivity extends AppCompatActivity {
     private int attempts;
     private Item currentItem;
     private List<Item> randomItems;
-    private ItemDao itemDao;
-    private com.example.quizzapp.model.ItemDatabase ItemDatabase;
     private ImageView itemImageView;
     private TextView scoreText;
     private TextView timerText;
@@ -41,6 +40,7 @@ public class QuizActivity extends AppCompatActivity {
     private List<Button> buttons;
     private String mode;
     private CountDownTimer currenTimer;
+    private ItemRepository itemRepository;
 
 
     @Override
@@ -88,30 +88,33 @@ public class QuizActivity extends AppCompatActivity {
 
         attempts++;
 
-        // Get instance of the database
-        ItemDatabase itemDatabase = ItemDatabase.getDatabase(getApplicationContext());
+// Get instance of the database
+        itemRepository = new ItemRepository(this);
 
-        // Get instance of the DAO
-        ItemDao itemDao = itemDatabase.itemDao();
+// Observe changes to the random item
+        itemRepository.getRandomItem().observe(this, item -> {
+            currentItem = item;
+            itemImageView.setImageBitmap(currentItem.getImage());
 
-        currentItem = itemDao.getRandomItem();
-        itemImageView.setImageBitmap(currentItem.getImage());
+            buttons = Arrays.asList(option1Button, option2Button, option3Button);
+            resetButtons();
+            int correctOptionIndex = new Random().nextInt(3);
+            buttons.get(correctOptionIndex).setText(currentItem.getName());
 
-        buttons = Arrays.asList(option1Button, option2Button, option3Button);
-        resetButtons();
-        int correctOptionIndex = new Random().nextInt(3);
-        buttons.get(correctOptionIndex).setText(currentItem.getName());
-
-        for (int i = 0; i < buttons.size(); i++) {
-            if (i == correctOptionIndex) continue;
-            Item randomItem = itemDao.getRandomItem();
-            if(itemDao.getAllItems().size() > 1) {
-                while (randomItem.getName() == currentItem.getName()) {
-                    randomItem = itemDao.getRandomItem();
+            // Observe changes to the list of all items
+            itemRepository.getAllItems().observe(this, items -> {
+                if(items.size() > 1) {
+                    for (int i = 0; i < buttons.size(); i++) {
+                        if (i == correctOptionIndex) continue;
+                        Item randomItem = items.get(new Random().nextInt(items.size()));
+                        while (randomItem.getName() == currentItem.getName()) {
+                            randomItem = items.get(new Random().nextInt(items.size()));
+                        }
+                        buttons.get(i).setText(randomItem.getName());
+                    }
                 }
-            }
-            buttons.get(i).setText(randomItem.getName());
-        }
+            });
+        });
 
 
         scoreText.setText("Score: " + score + " / " + attempts);

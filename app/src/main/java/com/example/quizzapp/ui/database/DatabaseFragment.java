@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +25,6 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
 
     private RecyclerView recyclerView;
     private ItemRepository itemRepository;
-    private ItemDao itemDao;
-    private ItemDatabase itemDatabase;
     private List<Item> itemList;
     MyAdapter adapter;
 
@@ -41,7 +40,7 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         myButton = view.findViewById(R.id.button3);
         myButton2 = view.findViewById(R.id.button4);
 
-        View.OnClickListener l = view1 -> extracted(view1 == myButton);
+        View.OnClickListener l = view1 -> sortItems(view1 == myButton);
 
         //Button sort A-Z
         myButton.setOnClickListener(l);
@@ -55,57 +54,53 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
 
         //get the items from the db
 
-        itemDatabase = ItemDatabase.getDatabase(getContext());
+        itemRepository = new ItemRepository(getContext());
 
-        // Initialize the ItemDao
-        itemDao = itemDatabase.itemDao();
-        itemRepository = new ItemRepository(itemDao);
+        //Initiate the recyclerview with a list of items
+        itemRepository.getAllItems().observe(this, items -> {
+            // Do something with the list of items
+            adapter = new MyAdapter(items, this);
+            recyclerView.setAdapter(adapter);
+        });
 
-        itemList = itemRepository.getAllItems();
-        adapter = new MyAdapter(itemList, this);
-        recyclerView.setAdapter(adapter);
 
         return view;
     }
 
-    private void extracted(Boolean atoz) {
-
-        itemDatabase = ItemDatabase.getDatabase(getContext());
-
-        // Initialize the ItemDao
-        itemDao = itemDatabase.itemDao();
-        itemRepository = new ItemRepository(itemDao);
-
-        // Sort from Z-A
-
-        if(atoz) {
-           itemList = itemRepository.getAllItemsSortedAZ();
-        }else{
-           itemList = itemRepository.getAllItemsSortedZA();
+    public void sortItems(boolean ascending) {
+        if (ascending) {
+            itemRepository.getAllItemsSortedAZ().observe(this, items -> {
+                // Update the adapter with the list of items sorted from A to Z
+                adapter.setItems(items);
+            });
+        } else {
+            itemRepository.getAllItemsSortedZA().observe(this, items -> {
+                // Update the adapter with the list of items sorted from Z to A
+                adapter.setItems(items);
+            });
         }
-
-        //refresh
-        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     //The method below is executed when an item in the recyclerview is clicked
     public void onItemClick(int position) {
-        // Get the items from the db
-        itemDatabase = ItemDatabase.getDatabase(getContext());
-        itemDao = itemDatabase.itemDao();
-        itemRepository = new ItemRepository(itemDao);
+        // Get the LiveData object for all items
+        LiveData<List<Item>> liveDataItems = itemRepository.getAllItems();
 
-        // Get the list of all items
-        List<Item> items = itemRepository.getAllItems();
+        // Observe the LiveData object for changes
+        liveDataItems.observe(this, items -> {
+            // Get the item at the clicked position
+            Item itemToDelete = items.get(position);
 
-        // Get the item at the clicked position
-        Item itemToDelete = items.get(position);
+            // Remove the item from the db
+            itemRepository.delete(itemToDelete);
 
-        // Remove the item from the db
-        itemRepository.delete(itemToDelete);
+            // Update the adapter with the new list of items
+            adapter.setItems(items);
 
-        // Refresh the fragment (and update the UI)
-        recyclerView.getAdapter().notifyDataSetChanged();
+            // Stop observing the LiveData object to avoid memory leaks
+            liveDataItems.removeObservers(this);
+        });
     }
+
 
 }

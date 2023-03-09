@@ -1,5 +1,6 @@
 package com.example.quizzapp.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,14 +21,15 @@ public interface ItemDao {
     void delete(Item item);
 
     @Query("SELECT * FROM item_table")
-    List<Item> getAllItems();
+    LiveData<List<Item>> getAllItems();
 
     @Query("SELECT * FROM item_table ORDER BY RANDOM() LIMIT 1")
-    Item getRandomItem();
+    LiveData<Item> getRandomItem();
 
     @Query("SELECT * FROM item_table ORDER BY name ASC")
-    List<Item> getAllItemsSortedAZ();
+    LiveData<List<Item>> getAllItemsSortedAZ();
 
     @Query("SELECT * FROM item_table ORDER BY name DESC")
-    List<Item> getAllItemsSortedZA();
+    LiveData<List<Item>> getAllItemsSortedZA();
 }
+
