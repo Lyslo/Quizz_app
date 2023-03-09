@@ -36,7 +36,6 @@ public class QuizActivity extends AppCompatActivity {
     private Button option1Button;
     private Button option2Button;
     private Button option3Button;
-
     private List<Button> buttons;
     private String mode;
     private CountDownTimer currenTimer;
