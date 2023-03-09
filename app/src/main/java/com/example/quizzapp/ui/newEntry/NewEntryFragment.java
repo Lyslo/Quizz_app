@@ -25,6 +25,7 @@ import com.example.quizzapp.model.Database;
 import com.example.quizzapp.model.Item;
 import com.example.quizzapp.model.ItemDao;
 import com.example.quizzapp.model.ItemDatabase;
+import com.example.quizzapp.model.ItemRepository;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,6 +39,7 @@ public class NewEntryFragment extends Fragment {
     private static final int PICK_IMAGE = 1;
     private Button mSubmitButton;
     private Bitmap selectedImage;
+    private ItemRepository itemRepository;
 
     @Nullable
     @Override
@@ -66,14 +68,11 @@ public class NewEntryFragment extends Fragment {
                 } else {
                     // Add code to handle the photo and photo name submission
                     // Get instance of the database
-                    ItemDatabase itemDatabase = ItemDatabase.getDatabase(getContext());
-
-                    // Get instance of the DAO
-                    ItemDao itemDao = itemDatabase.itemDao();
+                    itemRepository = new ItemRepository(getContext());
 
                     Item item1 = new Item(selectedImage, photoName);
 
-                    itemDao.insert(item1);
+                    itemRepository.insert(item1);
                 }
             }
         });

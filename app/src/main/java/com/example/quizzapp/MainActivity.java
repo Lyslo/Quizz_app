@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private ItemRepository itemRepository;
-    private ItemDao itemDao;
-    private ItemDatabase itemDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Create an instance of the ItemRepository class, passing in the ItemDao implementation
         // Get a reference to the AppDatabase
-        itemDatabase = ItemDatabase.getDatabase(getApplicationContext());
 
-        // Initialize the ItemDao
-        itemDao = itemDatabase.itemDao();
-        itemRepository = new ItemRepository(itemDao);
+        itemRepository = new ItemRepository(getApplicationContext());
 
         // Decode the bitmaps
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("lilac_scottish_fold", "drawable", getPackageName()));

@@ -25,7 +25,6 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
 
     private RecyclerView recyclerView;
     private ItemRepository itemRepository;
-    private List<Item> itemList;
     MyAdapter adapter;
 
     @Override
@@ -59,6 +58,7 @@ public class DatabaseFragment extends Fragment implements RecyclerViewInterface 
         //Initiate the recyclerview with a list of items
         itemRepository.getAllItems().observe(this, items -> {
             // Do something with the list of items
+
             adapter = new MyAdapter(items, this);
             recyclerView.setAdapter(adapter);
         });
