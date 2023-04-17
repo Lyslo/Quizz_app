@@ -28,7 +28,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private int score;
     private int attempts;
-    private Item currentItem;
+    private static Item currentItem;
     private List<Item> randomItems;
     private ImageView itemImageView;
     private TextView scoreText;
@@ -168,6 +168,8 @@ public class QuizActivity extends AppCompatActivity {
             button.setEnabled(true);
         }
     }
+
+    public static Item getCurrentItem(){return currentItem;}
 
 
 }
