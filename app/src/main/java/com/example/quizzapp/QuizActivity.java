@@ -20,8 +20,10 @@ import com.example.quizzapp.model.ItemRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 public class QuizActivity extends AppCompatActivity {
@@ -84,7 +86,6 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void setUpQuiz() {
-
         attempts++;
 
         // Get instance of the database
@@ -105,13 +106,21 @@ public class QuizActivity extends AppCompatActivity {
             // Observe changes to the list of all items
             itemRepository.getAllItems().observe(this, items -> {
                 if(items.size() > 1) {
+                    Set<String> usedOptions = new HashSet<>(); // Maintain a set of options used for the buttons
+
                     for (int i = 0; i < buttons.size(); i++) {
                         if (i == correctOptionIndex) continue;
-                        Item randomItem = items.get(new Random().nextInt(items.size()));
-                        while (randomItem.getName() == currentItem.getName()) {
+
+                        Item randomItem;
+                        String randomOption;
+
+                        do {
                             randomItem = items.get(new Random().nextInt(items.size()));
-                        }
-                        buttons.get(i).setText(randomItem.getName());
+                            randomOption = randomItem.getName();
+                        } while (randomOption.equals(currentItem.getName()) || usedOptions.contains(randomOption));
+
+                        usedOptions.add(randomOption);
+                        buttons.get(i).setText(randomOption);
                     }
                 }
             });
